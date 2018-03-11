@@ -20,23 +20,6 @@ object AppManager {
     private var packageManager: PackageManager? = null
     var allApps: ObservableArrayList<App> = ObservableArrayList()
     private var subscription: Disposable? = null
-//    private val loader: Observable<ArrayList<App>> = Observable.fromCallable {
-//        Tool.print("Reli Loading Apps")
-//        val apps = ArrayList<App>()
-//
-//        val intent = Intent(Intent.ACTION_MAIN, null)
-//        intent.addCategory(Intent.CATEGORY_LAUNCHER)
-//        val activitiesInfo = packageManager!!.queryIntentActivities(intent, 0)
-//        activitiesInfo.sortWith(Comparator { p1, p2 -> Collator.getInstance().compare(p1.loadLabel(packageManager).toString(), p2.loadLabel(packageManager).toString()) })
-//
-//        activitiesInfo
-//                .map { App(packageManager!!, it) }
-//                .forEach { apps.add(it) }
-//
-//        return@fromCallable apps
-//    }
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
 
     private fun getAllApps(): Observable<ArrayList<App>> = Observable.fromCallable {
         Tool.print("Reli Loading Apps")
