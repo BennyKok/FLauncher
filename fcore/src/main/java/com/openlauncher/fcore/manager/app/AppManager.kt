@@ -36,12 +36,12 @@ object AppManager {
             if (allApps == null)
                 allApps = ArrayList()
             else
-                allApps!!.clear()
+                allApps?.clear()
 
             val intent = Intent(Intent.ACTION_MAIN, null)
             intent.addCategory(Intent.CATEGORY_LAUNCHER)
             val activitiesInfo = packageManager!!.queryIntentActivities(intent, 0)
-            Collections.sort(activitiesInfo) { p1, p2 -> Collator.getInstance().compare(p1.loadLabel(packageManager).toString(), p2.loadLabel(packageManager).toString()) }
+            activitiesInfo.sortWith(Comparator { p1, p2 -> Collator.getInstance().compare(p1.loadLabel(packageManager).toString(), p2.loadLabel(packageManager).toString()) })
 
             activitiesInfo
                     .map { App(packageManager!!, it) }
@@ -49,9 +49,9 @@ object AppManager {
 
             return@fromCallable allApps!!
         }
-                //This is a background task
-                .subscribeOn(Schedulers.io())
-                //We will receive the result in the UI thread
-                .observeOn(AndroidSchedulers.mainThread())
+//                //This is a background task
+//                .subscribeOn(Schedulers.io())
+//                //We will receive the result in the UI thread
+//                .observeOn(AndroidSchedulers.mainThread())
     }
 }

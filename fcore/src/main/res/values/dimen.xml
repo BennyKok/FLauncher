@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="narrow_margin">8dp</dimen>
+    <dimen name="wide_margin">16dp</dimen>
+
+    <dimen name="narrow_lineSpacing">8dp</dimen>
+    <dimen name="normal_lineSpacing">14dp</dimen>
+    <dimen name="wide_lineSpacing">20dp</dimen>
+
+    <dimen name="small_appItem_size">60dp</dimen>
+    <dimen name="big_appItem_size">80dp</dimen>
+
+</resources>

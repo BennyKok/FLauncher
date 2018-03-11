@@ -2,27 +2,26 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="item"
             type="com.openlauncher.fcore.model.data.App" />
     </data>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <android.support.v7.widget.AppCompatImageView
-            android:layout_gravity="center_horizontal"
-            android:scaleType="fitCenter"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            style="@style/style_item_appIcon"
+            android:layout_width="@dimen/small_appItem_size"
+            android:layout_height="@dimen/small_appItem_size"
             android:src="@{item.icon}" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:maxLines="1"
+            style="@style/style_item_appTitle"
             android:ellipsize="end"
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{item.label}" />
