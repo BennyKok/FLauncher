@@ -8,6 +8,7 @@ import com.afollestad.aesthetic.Aesthetic
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 import com.openlauncher.fcore.Tool
 import com.openlauncher.fcore.manager.app.AppManager
+import com.openlauncher.fcore.manager.app.AppUtil.OnAppListChangedCallback
 import com.openlauncher.fcore.model.data.App
 import com.openlauncher.flauncher.R
 import com.openlauncher.flauncher.model.item.AppItem
@@ -39,7 +40,7 @@ class Home : AppCompatActivity() {
         val fastItemAdapter = FastItemAdapter<AppItem>()
         allAppsList.adapter = fastItemAdapter
 
-        AppManager.addChangedListener(object : AppManager.OnAppListChangedCallback() {
+        AppManager.addChangedListener(object : OnAppListChangedCallback() {
             override fun onAppListChanged(apps: ObservableArrayList<App>?) {
                 Tool.print("Apps result received")
 
