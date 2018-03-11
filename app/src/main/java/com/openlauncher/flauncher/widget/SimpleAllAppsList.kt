@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 import com.openlauncher.fcore.manager.app.AppManager
-import com.openlauncher.flauncher.model.recycler.AppItem
+import com.openlauncher.flauncher.model.item.AppItem
 
 class SimpleAllAppsList @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -19,7 +19,7 @@ class SimpleAllAppsList @JvmOverloads constructor(
 
         if (!isInEditMode)
             AppManager.getAllApps().subscribe { allApps ->
-                fastItemAdapter.set(allApps!!.map { AppItem(it) })
+                fastItemAdapter.set(allApps.map { AppItem(it) })
                 fastItemAdapter.withOnClickListener { _, _, item, _ ->
                     item.app.start(context)
                     true
