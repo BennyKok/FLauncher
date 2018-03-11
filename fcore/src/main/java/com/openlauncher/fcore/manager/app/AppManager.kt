@@ -2,56 +2,86 @@ package com.openlauncher.fcore.manager.app
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.databinding.ObservableArrayList
+import android.databinding.ObservableList
+import com.openlauncher.fcore.Tool
 import com.openlauncher.fcore.model.data.App
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import java.text.Collator
+import kotlin.collections.ArrayList
 
 object AppManager {
 
-    var packageManager: PackageManager? = null
-    private var allApps: ArrayList<App>? = null
+    private var packageManager: PackageManager? = null
+    private var allApps: ObservableArrayList<App> = ObservableArrayList()
+    private var subscription: Disposable? = null
+    private val loader: Observable<ArrayList<App>> = Observable.fromCallable {
+        Tool.print("Reli Loading Apps")
+        val apps = ArrayList<App>()
 
-    /**
-     * Must call this before calling
-     * @see getAllApps
-     * else an
-     * @see IllegalStateException
-     * will be thrown
-     */
-    fun init(packageManager: PackageManager) {
+        val intent = Intent(Intent.ACTION_MAIN, null)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+        val activitiesInfo = packageManager!!.queryIntentActivities(intent, 0)
+        activitiesInfo.sortWith(Comparator { p1, p2 -> Collator.getInstance().compare(p1.loadLabel(packageManager).toString(), p2.loadLabel(packageManager).toString()) })
+
+        activitiesInfo
+                .map { App(packageManager!!, it) }
+                .forEach { apps.add(it) }
+
+        return@fromCallable apps
+    }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun load(packageManager: PackageManager) {
+        Tool.print("Start loading Apps")
         AppManager.packageManager = packageManager
+
+        if (subscription != null) subscription!!.dispose()
+
+        subscription = loader.subscribe { apps ->
+            allApps.clear()
+            allApps.addAll(apps)
+
+            subscription!!.dispose()
+        }
     }
 
-    /**
-     * This will return an Observable with an ArrayList<App> as result
-     */
-    fun getAllApps(force: Boolean = false): Observable<ArrayList<App>> {
-        return Observable.fromCallable {
-            if (packageManager == null) throw IllegalStateException("Have not init yet, please call init")
-            if (allApps != null && !force) return@fromCallable allApps!!
+    fun addChangedListener(callback: OnAppListChangedCallback) {
+        allApps.addOnListChangedCallback(callback)
+    }
 
-            if (allApps == null)
-                allApps = ArrayList()
-            else
-                allApps?.clear()
+    fun removeChangedListener(callback: OnAppListChangedCallback) {
+        allApps.removeOnListChangedCallback(callback)
+    }
 
-            val intent = Intent(Intent.ACTION_MAIN, null)
-            intent.addCategory(Intent.CATEGORY_LAUNCHER)
-            val activitiesInfo = packageManager!!.queryIntentActivities(intent, 0)
-            activitiesInfo.sortWith(Comparator { p1, p2 -> Collator.getInstance().compare(p1.loadLabel(packageManager).toString(), p2.loadLabel(packageManager).toString()) })
+    abstract class OnAppListChangedCallback : ObservableList.OnListChangedCallback<ObservableArrayList<App>>() {
 
-            activitiesInfo
-                    .map { App(packageManager!!, it) }
-                    .forEach { allApps!!.add(it) }
+        abstract fun onAppListChanged(apps: ObservableArrayList<App>?)
 
-            return@fromCallable allApps!!
+        override fun onChanged(p0: ObservableArrayList<App>?) {
+            Tool.print("1")
         }
-//                //This is a background task
-//                .subscribeOn(Schedulers.io())
-//                //We will receive the result in the UI thread
-//                .observeOn(AndroidSchedulers.mainThread())
+
+        override fun onItemRangeChanged(p0: ObservableArrayList<App>?, p1: Int, p2: Int) {
+            Tool.print("2")
+        }
+
+        override fun onItemRangeInserted(p0: ObservableArrayList<App>?, p1: Int, p2: Int) {
+            Tool.print("3")
+            onAppListChanged(p0)
+        }
+
+        override fun onItemRangeMoved(p0: ObservableArrayList<App>?, p1: Int, p2: Int, p3: Int) {
+            Tool.print("4")
+        }
+
+        override fun onItemRangeRemoved(p0: ObservableArrayList<App>?, p1: Int, p2: Int) {
+            Tool.print("5")
+        }
     }
 }
