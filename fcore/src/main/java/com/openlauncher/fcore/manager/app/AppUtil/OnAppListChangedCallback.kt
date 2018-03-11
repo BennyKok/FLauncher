@@ -12,24 +12,15 @@ abstract class OnAppListChangedCallback : ObservableList.OnListChangedCallback<O
 
     abstract fun onAppListChanged(apps: ObservableArrayList<App>?)
 
-    override fun onChanged(p0: ObservableArrayList<App>?) {
-        Tool.print("1")
-    }
-
-    override fun onItemRangeChanged(p0: ObservableArrayList<App>?, p1: Int, p2: Int) {
-        Tool.print("2")
-    }
-
-    override fun onItemRangeInserted(p0: ObservableArrayList<App>?, p1: Int, p2: Int) {
-        Tool.print("3")
+    override fun onItemRangeInserted(p0: ObservableArrayList<App>?, p1: Int, p2: Int) {Tool.print("3")
         onAppListChanged(p0)
     }
 
-    override fun onItemRangeMoved(p0: ObservableArrayList<App>?, p1: Int, p2: Int, p3: Int) {
-        Tool.print("4")
-    }
+    override fun onChanged(p0: ObservableArrayList<App>?) {}
 
-    override fun onItemRangeRemoved(p0: ObservableArrayList<App>?, p1: Int, p2: Int) {
-        Tool.print("5")
-    }
+    override fun onItemRangeChanged(p0: ObservableArrayList<App>?, p1: Int, p2: Int) {}
+
+    override fun onItemRangeMoved(p0: ObservableArrayList<App>?, p1: Int, p2: Int, p3: Int) {}
+
+    override fun onItemRangeRemoved(p0: ObservableArrayList<App>?, p1: Int, p2: Int) {}
 }

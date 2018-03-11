@@ -7,6 +7,18 @@
         <item name="android:layout_marginBottom">@dimen/narrow_lineSpacing</item>
     </style>
 
+    <style name="style_item_general_no_bottom">
+        <item name="android:layout_marginTop">@dimen/normal_lineSpacing</item>
+        <item name="android:layout_marginStart">@dimen/narrow_margin</item>
+        <item name="android:layout_marginEnd">@dimen/narrow_margin</item>
+    </style>
+
+    <style name="style_item_section_title">
+        <item name="android:layout_marginTop">@dimen/narrow_lineSpacing</item>
+        <item name="android:layout_marginStart">@dimen/narrow_lineSpacing</item>
+        <item name="android:layout_marginEnd">@dimen/narrow_lineSpacing</item>
+    </style>
+
     <style name="style_item_appIcon" parent="style_item_general">
         <item name="android:scaleType">fitCenter</item>
         <item name="android:layout_gravity">center_horizontal</item>

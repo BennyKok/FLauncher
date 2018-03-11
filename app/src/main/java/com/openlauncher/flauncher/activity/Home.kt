@@ -4,6 +4,7 @@ import android.databinding.ObservableArrayList
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import com.afollestad.aesthetic.Aesthetic
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 import com.openlauncher.fcore.Tool
@@ -12,6 +13,7 @@ import com.openlauncher.fcore.manager.app.AppUtil.OnAppListChangedCallback
 import com.openlauncher.fcore.model.data.App
 import com.openlauncher.flauncher.R
 import com.openlauncher.flauncher.model.item.AppItem
+import com.openlauncher.flauncher.model.item.SectionGroupItem
 import kotlinx.android.synthetic.main.activity_home.*
 
 class Home : AppCompatActivity() {
@@ -29,10 +31,36 @@ class Home : AppCompatActivity() {
                     .apply()
         }
 
-
-        initSimpleAppList()
+        initTemplateUI()
+        //initSimpleAppList()
 
         AppManager.load(packageManager)
+    }
+
+    private fun initTemplateUI() {
+        allAppsList.layoutManager = LinearLayoutManager(this)
+        val fastItemAdapter = FastItemAdapter<SectionGroupItem>()
+        allAppsList.adapter = fastItemAdapter
+
+        //For instance run to display the correctly
+        if (AppManager.allApps.size != 0){
+            val list = ArrayList<App>()
+            (0..5).mapTo(list) { AppManager.allApps[it] }
+            fastItemAdapter.clear()
+            fastItemAdapter.add(SectionGroupItem("New", list))
+            fastItemAdapter.add(SectionGroupItem("Recent", list))
+        }
+        AppManager.addChangedListener(object : AppManager.OnAppListChangedCallback() {
+            override fun onAppListChanged(apps: ObservableArrayList<App>?) {
+                Tool.print("Apps result received")
+
+                val list = ArrayList<App>()
+                (0..5).mapTo(list) { apps!![it] }
+                fastItemAdapter.clear()
+                fastItemAdapter.add(SectionGroupItem("New", list))
+                fastItemAdapter.add(SectionGroupItem("Recent", list))
+            }
+        })
     }
 
     private fun initSimpleAppList() {
