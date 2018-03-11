@@ -3,10 +3,10 @@ package com.openlauncher.fcore.manager.app
 import android.content.Intent
 import android.content.pm.PackageManager
 import com.openlauncher.fcore.model.data.App
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.Observable
 import java.util.*
-import rx.schedulers.Schedulers
 import java.text.Collator
 
 object AppManager {

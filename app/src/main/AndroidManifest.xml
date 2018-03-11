@@ -3,6 +3,7 @@
     package="com.openlauncher.flauncher">
 
     <application
+        android:name=".LauncherApplication"
         android:fullBackupContent="true"
         android:allowBackup="true"
         android:hardwareAccelerated="true"

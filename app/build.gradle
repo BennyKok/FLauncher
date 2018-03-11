@@ -20,6 +20,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
 }
 
 dependencies {
@@ -34,8 +37,10 @@ dependencies {
     implementation 'com.mikepenz:fastadapter:3.2.4@aar'
     implementation 'com.mikepenz:fastadapter-commons:3.2.4@aar'
     implementation 'io.reactivex:rxkotlin:1.0.0'
-    implementation 'io.reactivex:rxandroid:1.2.0'
-    implementation 'io.reactivex:rxjava:1.2.7'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.0'
+
+    implementation 'com.52inc:scoops:1.0.0'
 
     // Support libraries
     implementation 'com.android.support:support-v4:27.1.0'

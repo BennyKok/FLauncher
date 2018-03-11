@@ -1,4 +1,4 @@
-package com.openlauncher.flauncher.model.recycler
+package com.openlauncher.flauncher.model.item
 
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
